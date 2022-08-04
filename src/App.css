@@ -1,0 +1,58 @@
+.App {
+  padding: 30px;
+  font-size: 16px;
+  text-align: center;
+}
+
+input {
+  font-size: 16px;
+  height: 30px;
+  width: 250px;
+  padding: 0 8px;
+}
+
+.search-bar {
+  padding-bottom: 16px;
+}
+
+.total {
+  padding-bottom: 16px;
+}
+
+.error {
+  color: red;
+}
+
+.list {
+  display: flex;
+  width: 998px;
+  max-width: 100%;
+  margin: auto;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0;
+}
+
+.list-item {
+  padding: 16px;
+  display: flex;
+  margin: 1%;
+  background: #efefef;
+  border-radius: 6px;
+  width: 28%;
+}
+
+
+.list-item .title {
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+
+.list-item img {
+  width: 100px;
+  margin-right: 16px;
+}
+
+.list-item .data {
+  text-align: left;
+}
