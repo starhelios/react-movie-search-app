@@ -9,14 +9,18 @@ input {
   width: 250px;
   padding: 0 8px;
 }
-.search-bar {
-  padding-bottom: 16px;
-}
-.total {
-  padding-bottom: 16px;
+.center {
+  width: 20%;
+  text-align: center;
 }
 .error {
   color: red;
+}
+.header {
+  width: 998px;
+  max-width: 100%;
+  margin: auto;
+  padding: 16px 60px;
 }
 .list {
   display: flex;
@@ -41,7 +45,6 @@ input {
   font-weight: 600;
 }
 .list-item img {
-  width: 100px;
   margin-right: 16px;
 }
 .list-item .data {
@@ -57,7 +60,7 @@ input {
   left: 50%;
   display: block;
   padding: 2em;
-  min-width: 30em;
+  min-width: 40em;
   max-width: 70%;
   color: #000;
   background-color: #fff;
@@ -91,4 +94,7 @@ input {
   font-size: 20px;
   cursor: pointer;
   border-radius: 5px;
+}
+.arrow-empty {
+  width: 34px;
 }

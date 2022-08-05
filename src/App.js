@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
 import Modal from "./components/Modal";
+import Timer from "./components/Timer";
 
 const apiUrl = 'http://www.omdbapi.com/?i=tt3896198&apikey=6db0e186&';
 
@@ -64,13 +65,19 @@ function App() {
 
   return (
     <div className="App">
-      <div className="search-bar">
-        <input type="text" value={query}  onChange={handleInput} placeholder='Search movie...' />
-      </div>
+      <div className='row header'>
+        <div className="center">Time: <Timer /></div>
 
-      {total > 0 && <div className="total">
-        Total results: {total}
-      </div>}
+        <div className="search-bar">
+          <input type="text" value={query}  onChange={handleInput} placeholder='Search movie...' />
+        </div>
+
+        <div className="center">
+          {total > 0 && <div>
+            Total results: <b>{total}</b>
+          </div>}
+        </div>
+      </div>
 
       <div className="list">
         {rows && rows.map((item, index) => (
@@ -96,9 +103,13 @@ function App() {
       >
         {currentIndex >= 0 && rows[currentIndex] && (
           <div className="row">
-            <div className="arrow" onClick={handlePrev}>&lt;</div>
+            {currentIndex > 0
+              ? <div className="arrow" onClick={handlePrev}>&lt;</div>
+              : <div className="arrow-empty" />
+            }
+
             <div className="list-item list-item-full">
-              <img src={rows[currentIndex].Poster} width="100px" alt=""/>
+              <img src={rows[currentIndex].Poster} width="200px" alt=""/>
               <div className="data">
                 <h3 className="title">{rows[currentIndex].Title}</h3>
                 <div>Type: {rows[currentIndex].Type}</div>
@@ -106,7 +117,11 @@ function App() {
                 <div>imdbID: {rows[currentIndex].imdbID}</div>
               </div>
             </div>
-            <div className="arrow" onClick={handleNext}>&gt;</div>
+
+              {currentIndex < rows.length - 1
+                ? <div className="arrow" onClick={handleNext}>&gt;</div>
+                : <div className="arrow-empty" />
+              }
           </div>
         )}
       </Modal>
