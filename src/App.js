@@ -2,8 +2,9 @@ import React, {useEffect, useState} from 'react';
 import './App.css';
 import Modal from "./components/Modal";
 import Timer from "./components/Timer";
+import MovieDetails from "./components/MovieDetails";
 
-const apiUrl = 'http://www.omdbapi.com/?i=tt3896198&apikey=6db0e186&';
+const apiUrl = 'http://www.omdbapi.com/?apikey=6db0e186&';
 
 function App() {
   const [query, setQuery] = useState('');
@@ -12,9 +13,17 @@ function App() {
   const [total, setTotal] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(false);
+  const [current, setCurrent] = useState();
 
   const handleInput = (e) => {
     setQuery(e.target.value);
+  }
+
+  const getMovie = async (id) => {
+    const item = rows[id];
+    const response = await fetch(`${apiUrl}i=${item && item.imdbID}`).then(res => res.json())
+
+    setCurrent(response)
   }
 
   const getMovieList = () => {
@@ -43,18 +52,23 @@ function App() {
 
   const handleNext = () => {
     if (currentIndex < rows.length - 1) {
-      setCurrentIndex(currentIndex + 1);
+      const id = currentIndex + 1
+      setCurrentIndex(id);
+      getMovie(id);
     }
   }
   const handlePrev = () => {
     if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
+      const id = currentIndex - 1;
+      setCurrentIndex(id);
+      getMovie(id);
     }
   }
 
   const showItem = (index) => {
     setCurrentIndex(index);
     setShowModal(true);
+    getMovie(index);
   }
 
   useEffect(() => {
@@ -66,10 +80,10 @@ function App() {
   return (
     <div className="App">
       <div className='row header'>
-        <div className="center">Time: <Timer /></div>
+        <div className="center">Time: <Timer/></div>
 
         <div className="search-bar">
-          <input type="text" value={query}  onChange={handleInput} placeholder='Search movie...' />
+          <input type="text" value={query} onChange={handleInput} placeholder='Search movie...'/>
         </div>
 
         <div className="center">
@@ -105,23 +119,15 @@ function App() {
           <div className="row">
             {currentIndex > 0
               ? <div className="arrow" onClick={handlePrev}>&lt;</div>
-              : <div className="arrow-empty" />
+              : <div className="arrow-empty"/>
             }
 
-            <div className="list-item list-item-full">
-              <img src={rows[currentIndex].Poster} width="200px" alt=""/>
-              <div className="data">
-                <h3 className="title">{rows[currentIndex].Title}</h3>
-                <div>Type: {rows[currentIndex].Type}</div>
-                <div>Year: {rows[currentIndex].Year}</div>
-                <div>imdbID: {rows[currentIndex].imdbID}</div>
-              </div>
-            </div>
+            <MovieDetails data={current}/>
 
-              {currentIndex < rows.length - 1
-                ? <div className="arrow" onClick={handleNext}>&gt;</div>
-                : <div className="arrow-empty" />
-              }
+            {currentIndex < rows.length - 1
+              ? <div className="arrow" onClick={handleNext}>&gt;</div>
+              : <div className="arrow-empty"/>
+            }
           </div>
         )}
       </Modal>

@@ -46,9 +46,13 @@ input {
 }
 .list-item img {
   margin-right: 16px;
+  height: fit-content;
 }
 .list-item .data {
   text-align: left;
+  flex: 1;
+  overflow-y: auto;
+  max-height: 400px;
 }
 .list-item-full {
   width: 70%;
@@ -60,8 +64,8 @@ input {
   left: 50%;
   display: block;
   padding: 2em;
-  min-width: 40em;
-  max-width: 70%;
+  min-width: 50em;
+  max-width: 80%;
   color: #000;
   background-color: #fff;
   border-radius: 10px;
