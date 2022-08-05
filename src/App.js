@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
+import Modal from "./components/Modal";
 
 const apiUrl = 'http://www.omdbapi.com/?i=tt3896198&apikey=6db0e186&';
 
@@ -8,6 +9,8 @@ function App() {
   const [rows, setRows] = useState([]);
   const [error, setError] = useState('');
   const [total, setTotal] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(false);
 
   const handleInput = (e) => {
     setQuery(e.target.value);
@@ -33,6 +36,26 @@ function App() {
       })
   }
 
+  const handleCloseModal = () => {
+    setShowModal(false);
+  }
+
+  const handleNext = () => {
+    if (currentIndex < rows.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    }
+  }
+  const handlePrev = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
+  }
+
+  const showItem = (index) => {
+    setCurrentIndex(index);
+    setShowModal(true);
+  }
+
   useEffect(() => {
     if (query.length > 0) {
       getMovieList();
@@ -51,7 +74,7 @@ function App() {
 
       <div className="list">
         {rows && rows.map((item, index) => (
-          <div key={index} className="list-item">
+          <div key={index} className="list-item" onClick={() => showItem(index)}>
             <img src={item.Poster} width="100px" alt=""/>
             <div className="data">
               <h3 className="title">{item.Title}</h3>
@@ -66,6 +89,27 @@ function App() {
       {error && <div className="error">
         Error: {error}
       </div>}
+
+      <Modal
+        isOpen={showModal}
+        onClose={handleCloseModal}
+      >
+        {currentIndex >= 0 && rows[currentIndex] && (
+          <div className="row">
+            <div className="arrow" onClick={handlePrev}>&lt;</div>
+            <div className="list-item list-item-full">
+              <img src={rows[currentIndex].Poster} width="100px" alt=""/>
+              <div className="data">
+                <h3 className="title">{rows[currentIndex].Title}</h3>
+                <div>Type: {rows[currentIndex].Type}</div>
+                <div>Year: {rows[currentIndex].Year}</div>
+                <div>imdbID: {rows[currentIndex].imdbID}</div>
+              </div>
+            </div>
+            <div className="arrow" onClick={handleNext}>&gt;</div>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }
